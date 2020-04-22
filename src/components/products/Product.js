@@ -22,7 +22,7 @@ export default (props) => {
                         <label className="label--product">Price:</label> {props.product.price}
                     </div>
                     <div className="product__type">
-                        <label className="label--product">Product Type:</label> {props.product.productTypesId}
+                        <label className="label--product">Product Type:</label> {props.productType.type}
                     </div>
                 </ModalBody>
                 <ModalFooter>
