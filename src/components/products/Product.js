@@ -1,24 +1,23 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import "./Product.css"
+import { CartContext } from "../cart/CartProductProvider"
 
 export default (props) => {
     const [modal, setModal] = useState(false)
     const toggle = () => setModal(!modal)
+    const { addItemToCart } = useContext(CartContext)
 
     const addToCart = (e) => {
+        e.preventDefault()
         const productId = props.product.id
-        const productString = productId.toString()
-        const cart = sessionStorage.getItem("customer_cart")
-
-        if (cart === null || cart === "") {
-            sessionStorage.setItem("customer_cart", productId)
-            toggle()
-        } else {
-            const updateCart = cart + "," + productString
-            sessionStorage.setItem("customer_cart", updateCart)
-            toggle()
+        const customerId = parseInt(localStorage.getItem("kandy_customer"))
+        let productObject = {
+            productId: productId,
+            customerId: customerId
         }
+        addItemToCart(productObject)
+        toggle()
     }
 
     return (

@@ -11,15 +11,9 @@ export default (props) => {
             <li className="navbar__item active">
                 <Link className="navbar__link" to="/products">Online Ordering</Link>
             </li>
-            {
-                sessionStorage.getItem("customer_cart")
-                    ? <li className="navbar__item">
-                        <Link className="navbar__link"
-                            to="/cart"
-                        >Cart</Link>
-                    </li>
-                    : ""
-            }
+            <li className="navbar__item active">
+                <Link className="navbar__link" to="/cart">Cart</Link>
+            </li>
             <li className="navbar__item active">
                 <Link className="navbar__link" to="/customer">Users's Account</Link>
             </li>
@@ -34,7 +28,6 @@ export default (props) => {
                             onClick={e => {
                                 e.preventDefault()
                                 localStorage.removeItem("kandy_customer")
-                                sessionStorage.removeItem("customer_cart")
                                 props.history.push("/")
                             }}
                         >Logout</Link>
