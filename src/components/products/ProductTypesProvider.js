@@ -51,7 +51,7 @@ export const ProductTypesTypesProvider = (props) => {
     }, [])
 
     useEffect(() => {
-        console.log("****  LOCATION APPLICATION STATE CHANGED  ****")
+        console.log("****  PRODUCTTYPES APPLICATION STATE CHANGED  ****")
     }, [productTypes])
 
     return (

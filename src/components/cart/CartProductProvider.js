@@ -47,7 +47,7 @@ export const CartProvider = (props) => {
     }, [])
 
     useEffect(() => {
-        console.log("****  LOCATION APPLICATION STATE CHANGED  ****")
+        console.log("****  SHOPPINGCART APPLICATION STATE CHANGED  ****")
     }, [shoppingCart])
 
     return (

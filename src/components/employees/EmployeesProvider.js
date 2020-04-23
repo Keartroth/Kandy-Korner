@@ -58,7 +58,7 @@ export const EmployeeProvider = (props) => {
     }, [])
 
     useEffect(() => {
-        console.log("****  LOCATION APPLICATION STATE CHANGED  ****")
+        console.log("****  EMPLOYEES APPLICATION STATE CHANGED  ****")
     }, [employees])
 
     return (
