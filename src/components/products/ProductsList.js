@@ -10,7 +10,7 @@ export default props => {
 
     return (
         <article className="products">
-            <h1>Products</h1>
+            <h1>Available Products</h1>
             <section className="productsList">
                 {
                     products.map(pro => {

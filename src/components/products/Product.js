@@ -6,10 +6,25 @@ export default (props) => {
     const [modal, setModal] = useState(false)
     const toggle = () => setModal(!modal)
 
+    const addToCart = (e) => {
+        const productId = props.product.id
+        const productString = productId.toString()
+        const cart = sessionStorage.getItem("customer_cart")
+
+        if (cart === null || cart === "") {
+            sessionStorage.setItem("customer_cart", productId)
+            toggle()
+        } else {
+            const updateCart = cart + "," + productString
+            sessionStorage.setItem("customer_cart", updateCart)
+            toggle()
+        }
+    }
+
     return (
         <>
             <div className="product">
-                <h3 className="location__name">{props.product.name}</h3>
+                <h3 className="product__name">{props.product.name}</h3>
                 <Button onClick={toggle}>Details</Button>
             </div>
 
@@ -26,6 +41,7 @@ export default (props) => {
                     </div>
                 </ModalBody>
                 <ModalFooter>
+                    <Button color="secondary" onClick={addToCart}>Add to Cart</Button>
                     <Button color="secondary" onClick={toggle}>Close</Button>
                 </ModalFooter>
             </Modal>

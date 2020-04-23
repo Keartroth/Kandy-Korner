@@ -7,34 +7,46 @@ import { ProductProvider } from "./products/ProductsProvider"
 import ProductsList from "./products/ProductsList"
 import { ProductTypesTypesProvider } from "./products/ProductTypesProvider"
 import { EmployeeProvider } from "./employees/EmployeesProvider"
+import { CustomerProvider } from "./customers/CustomerProvider"
+import { CustomerProductsProvider } from "./customers/CustomerProductsProvider"
+import Customer from "./customers/Customer"
+import CustomerCart from "./customers/CustomerCart"
 
 export default (props) => {
     return (
         <>
-            <LocationProvider>
-                {/* Render the location list when http://localhost:3000/ */}
-                <Route exact path="/">
-                    <LocationList />
-                </Route>
-            </LocationProvider>
-
-            <ProductProvider>
-                <ProductTypesTypesProvider>
-                    {/* Render the products list when http://localhost:3000/products */}
-                    <Route exact path="/products" render={
-                        props => <ProductsList {...props} />
-                    } />
-                </ProductTypesTypesProvider>
-            </ProductProvider>
-            
-            <EmployeeProvider>
-                <LocationProvider>
-                    {/* Render the employees list when http://localhost:3000/employees */}
-                    <Route exact path="/employees" render={
-                        props => <EmployeesList {...props} />
-                    } />
-                </LocationProvider>
-            </EmployeeProvider>
+            <CustomerProvider>
+                <EmployeeProvider>
+                    <LocationProvider>
+                        <ProductProvider>
+                            <ProductTypesTypesProvider>
+                                <CustomerProductsProvider>
+                                    {/* Render the location list when http://localhost:3000/ */}
+                                    <Route exact path="/">
+                                        <LocationList />
+                                    </Route>
+                                    {/* Render the products list when http://localhost:3000/products */}
+                                    <Route exact path="/products" render={
+                                        props => <ProductsList {...props} />
+                                    } />
+                                    {/* Render the current customer's shopping cart when http://localhost:3000/cart */}
+                                    <Route exact path="/cart" render={
+                                        props => <CustomerCart {...props} />
+                                    } />
+                                    {/* Render the employees list when http://localhost:3000/employees */}
+                                    <Route exact path="/employees" render={
+                                        props => <EmployeesList {...props} />
+                                    } />
+                                    {/* Render the current customer's information when http://localhost:3000/customer */}
+                                    <Route exact path="/customer" render={
+                                        props => <Customer {...props} />
+                                    } />
+                                </CustomerProductsProvider>
+                            </ProductTypesTypesProvider>
+                        </ProductProvider>
+                    </LocationProvider>
+                </EmployeeProvider>
+            </CustomerProvider>
         </>
     )
 }

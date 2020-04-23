@@ -1,0 +1,32 @@
+ 
+.customer {
+    border: 1px solid goldenrod;
+    flex-basis: 28%;
+    margin: auto;
+    padding: 1em;
+    text-align: center;
+    width: 400px;
+}
+
+.shoppingCart {
+   text-align: center;
+}
+
+.pendingOrder {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.cart__preview {
+    border: 1px solid goldenrod;
+    flex-basis: 28%;
+    margin: 1em;
+    padding: 1em;
+    text-align: center;
+    width: 400px;
+}
+
+#orderHistory__header {
+    margin: auto;
+}
