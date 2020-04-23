@@ -1,17 +1,18 @@
 import React from "react"
 import { Route } from "react-router-dom"
+import { CartProvider } from "./cart/CartProductProvider"
+import { CustomerProductsProvider } from "./customers/CustomerProductsProvider"
+import { CustomerProvider } from "./customers/CustomerProvider"
+import { EmployeeProvider } from "./employees/EmployeesProvider"
 import { LocationProvider } from "./locations/LocationsProvider"
 import { ProductProvider } from "./products/ProductsProvider"
 import { ProductTypesTypesProvider } from "./products/ProductTypesProvider"
-import { EmployeeProvider } from "./employees/EmployeesProvider"
-import { CustomerProvider } from "./customers/CustomerProvider"
-import { CustomerProductsProvider } from "./customers/CustomerProductsProvider"
-import { CartProvider } from "./cart/CartProductProvider"
-import LocationList from "./locations/LocationsList"
-import EmployeesList from "./employees/EmployeesList"
-import ProductsList from "./products/ProductsList"
-import Customer from "./customers/Customer"
 import Cart from "./cart/Cart"
+import CustomerList from "./customers/CustomerList"
+import EmployeesList from "./employees/EmployeesList"
+import LocationList from "./locations/LocationsList"
+import ProductsList from "./products/ProductsList"
+import User from "./user/User"
 
 export default (props) => {
     return (
@@ -35,13 +36,17 @@ export default (props) => {
                                         <Route exact path="/cart" render={
                                             props => <Cart {...props} />
                                         } />
+                                        {/* Render the current user's information when http://localhost:3000/user */}
+                                        <Route exact path="/user" render={
+                                            props => <User {...props} />
+                                        } />
                                         {/* Render the employees list when http://localhost:3000/employees */}
                                         <Route exact path="/employees" render={
                                             props => <EmployeesList {...props} />
                                         } />
-                                        {/* Render the current customer's information when http://localhost:3000/customer */}
-                                        <Route exact path="/customer" render={
-                                            props => <Customer {...props} />
+                                        {/* Render the customers' information when http://localhost:3000/customers */}
+                                        <Route exact path="/customers" render={
+                                            props => <CustomerList {...props} />
                                         } />
                                     </CartProvider>
                                 </CustomerProductsProvider>
