@@ -5,7 +5,8 @@ import "./Location.css"
 export default (props) => {
     const [modal, setModal] = useState(false)
     const toggle = () => setModal(!modal)
-
+    const inventoryList = props.productList
+    
     return (
         <>
             <section className="location">
@@ -24,6 +25,14 @@ export default (props) => {
                     </div>
                     <div className="location__amenities">
                         <label className="label--location">Handicap Accessible:</label> {props.location.handicapAccessible ? "✅" : "🚫"}
+                    </div>
+                    <div>
+                        <label className="label--location">Available Product:</label>
+                        <ul>
+                            {
+                                inventoryList.map(il => <li key={il.id}>{il.name}</li>)
+                            }
+                        </ul>
                     </div>
                 </ModalBody>
                 <ModalFooter>

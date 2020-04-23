@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from "react"
+import React, { useContext, useState, useRef } from "react"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import { LocationContext } from "../locations/LocationsProvider"
 import { EmployeeContext } from "./EmployeesProvider"
@@ -8,6 +8,8 @@ import "./Employee.css"
 export default props => {
     const [modal, setModal] = useState(false)
     const toggle = () => setModal(!modal)
+    const [modalHireForm, setHireFormModal] = useState(false)
+    const toggleReHireForm = () => setHireFormModal(!modalHireForm)
     const { employees, addEmployee } = useContext(EmployeeContext)
     const { locations } = useContext(LocationContext)
     const employeeName = useRef("")
@@ -16,6 +18,8 @@ export default props => {
     const employeePayRate = useRef("")
     const employeeFullTime = useRef(0)
     const employeeManagement = useRef(0)
+    const currentEmployees = employees.filter(e => e.employmentStatus === true)
+    const previousEmployees = employees.filter(e => e.employmentStatus === false)
 
     const constructNewEmployee = () => {
         const locationId = parseInt(employeeLocation.current.value)
@@ -24,47 +28,33 @@ export default props => {
         if (locationId === 0) {
             window.alert("Please select a location")
         } else {
-            const managementBooleanCheck = () => {
-                if (employeeManagement.current.value === "true") {
-                    return true
-                } else {
-                    return false
-                }
-            }
+            const isManager = (employeeManagement.current.value === "true" ? true : false)
+            const isFullTime = (employeeFullTime.current.value === "true" ? true : false)
 
-            const fullTimeBooleanCheck = () => {
-                if (employeeFullTime.current.value === "true") {
-                    return true
-                } else {
-                    return false
-                }
-            }
-
-            let fullTimeBoolean = fullTimeBooleanCheck()
-            let managementBoolean = managementBooleanCheck()
             addEmployee({
                 name: employeeName.current.value,
-                management: managementBoolean,
-                fullTime: fullTimeBoolean,
+                management: isManager,
+                fullTime: isFullTime,
                 payRate: payRateInt,
                 locationId: locationId,
-                address: employeeAddress.current.value
+                address: employeeAddress.current.value,
+                employmentStatus: true
             })
                 .then(toggle)
         }
     }
 
-
     return (
         <>
             <article className="employees">
                 <h1>Employees</h1>
-                <Button onClick={toggle}>
+                <Button className="employeeList__button" onClick={toggle}>
                     Add Employee
                 </Button>
+                {previousEmployees.length ? <Button className="employeeList__button" onClick={toggleReHireForm}>Show Former Employees</Button> : ""}
                 <section className="employeesList">
                     {
-                        employees.map(emp => {
+                        currentEmployees.map(emp => {
                             let foundLocation = locations.find(l => l.id === emp.locationId)
 
                             return <Employee key={emp.id}
@@ -79,7 +69,7 @@ export default props => {
             <Modal isOpen={modal} toggle={toggle}>
                 <form>
                     <ModalHeader>
-                        <h2 className="employeeForm__title">New Employee</h2>
+                        <div className="employeeForm__title">New Employee</div>
                     </ModalHeader>
                     <ModalBody>
                         <div className="form-group">
@@ -170,6 +160,32 @@ export default props => {
                             Save Employee
                     </Button>
                         <Button color="secondary" onClick={toggle}>Close</Button>
+                    </ModalFooter>
+                </form>
+            </Modal>
+
+            <Modal isOpen={modalHireForm} toggle={toggleReHireForm}>
+                <form>
+                    <ModalHeader>
+                        <div className="employeeForm__title">Previous Employees</div>
+                    </ModalHeader>
+                    <ModalBody>
+                        <section className="employeesList">
+                            {
+                                previousEmployees.map(emp => {
+                                    let foundLocation = locations.find(l => l.id === emp.locationId)
+
+                                    return <Employee key={emp.id}
+                                        employee={emp}
+                                        workplace={foundLocation}
+                                        toggleReHireForm={toggleReHireForm}
+                                        {...props} />
+                                })
+                            }
+                        </section>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="secondary" onClick={toggleReHireForm}>Close</Button>
                     </ModalFooter>
                 </form>
             </Modal>

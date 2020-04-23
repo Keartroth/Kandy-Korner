@@ -40,7 +40,7 @@ export const CustomerProductsProvider = (props) => {
     }, [])
 
     useEffect(() => {
-        console.log("****  LOCATION APPLICATION STATE CHANGED  ****")
+        console.log("****  CUSTOMERPRODUCTS APPLICATION STATE CHANGED  ****")
     }, [customerProducts])
 
     return (

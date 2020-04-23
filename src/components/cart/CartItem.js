@@ -17,8 +17,10 @@ export default (props) => {
     return (
         <>
             <div className="cart__preview">
-                <h5 className="cart__productName">{props.product.name}</h5>
-                <label className="cart__productPrice">Price:</label> {props.product.price}
+                <div>
+                    <div className="cart__productName">{props.product.name}</div>
+                    <label className="cart__productPrice">Price:</label> {props.product.price}
+                </div>
                 <Button onClick={removeItem}>Remove Item From Cart</Button>
             </div>
         </>
