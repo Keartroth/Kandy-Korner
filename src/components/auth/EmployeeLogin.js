@@ -3,12 +3,13 @@ import { Button } from 'reactstrap'
 import { Link } from "react-router-dom";
 import "./Login.css"
 
-const Login = props => {
+
+const EmployeeLogin = props => {
     const email = useRef()
     const password = useRef()
 
-    const existingUserCheck = () => {
-        return fetch(`http://localhost:8088/customers?email=${email.current.value}`)
+    const existingEmployeeCheck = () => {
+        return fetch(`http://localhost:8088/employees?email=${email.current.value}`)
             .then(_ => _.json())
             .then(user => {
                 if (user.length) {
@@ -18,14 +19,18 @@ const Login = props => {
             })
     }
 
-    const handleLogin = (e) => {
+    const handleEmployeeLogin = (e) => {
         e.preventDefault()
-
-        existingUserCheck()
+        existingEmployeeCheck()
             .then(exists => {
                 if (exists && exists.password === password.current.value) {
-                    localStorage.setItem("kandy_customer", exists.id)
-                    props.history.push("/")
+                    if (exists.management === true) {
+                        localStorage.setItem("kandy_manager", exists.id)
+                        props.history.push("/")
+                    } else {
+                        localStorage.setItem("kandy_employee", exists.id)
+                        props.history.push("/")
+                    }
                 } else if (exists && exists.password !== password.current.value) {
                     window.alert("Password does not match.")
                 } else if (!exists) {
@@ -37,8 +42,8 @@ const Login = props => {
     return (
         <main className="container--login">
             <section>
-                <form className="form--login" onSubmit={handleLogin}>
-                    <h1>Kandy Korner</h1>
+                <form className="form--login" onSubmit={handleEmployeeLogin}>
+                    <h1>Kandy Korner Employee Login</h1>
                     <h2>Please sign in</h2>
                     <fieldset>
                         <label htmlFor="inputEmail"> Email address </label>
@@ -62,14 +67,11 @@ const Login = props => {
                         </Button>
                         <br/>
                         <br/>
-                        <Link to="/employeelogin">Employee Login</Link>
+                        <Link to="/login">User Login</Link>
                     </fieldset>
                 </form>
-            </section>
-            <section className="link--register">
-                <Link to="/register">Not a member yet?</Link>
             </section>
         </main>
     )
 }
-export default Login
+export default EmployeeLogin
