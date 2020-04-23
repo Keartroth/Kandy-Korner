@@ -1,33 +1,30 @@
 import React, { useContext, useState, useEffect } from "react"
-import { CustomerContext } from "./CustomerProvider"
+import { CustomerContext } from "../customers/CustomerProvider"
 import { Button } from 'reactstrap'
-import "./Customer.css"
+import "../customers/Customer.css"
 import { ProductContext } from "../products/ProductsProvider"
-import CartProductPreview from "./CartProductPreview"
-import { CustomerProductsContext } from "./CustomerProductsProvider"
+import CartItem from "./CartItem"
+import { CustomerProductsContext } from "../customers/CustomerProductsProvider"
+import { CartContext } from "./CartProductProvider"
 
 export default props => {
     const { addCustomerProducts } = useContext(CustomerProductsContext)
     const { customers } = useContext(CustomerContext)
     const { products } = useContext(ProductContext)
+    const { shoppingCart, removeItemFromCart } = useContext(CartContext)
     const customerId = parseInt(localStorage.getItem("kandy_customer"))
     const customerInformation = customers.find(c => c.id === customerId)
-    const cart = sessionStorage.getItem("customer_cart")
-    const arrayOfCustomersProducts = cart.split(",")
+    const customerCart = shoppingCart.filter(sc => sc.customerId === customerId)
 
     const purchaseCart = () => {
-        arrayOfCustomersProducts.map(cp => {
-            let productId = parseInt(cp)
-            let date = Date.now()
-            let customerProductPurchase = {
-                productId: productId,
-                customerId: customerId,
-                purchaseDate: date
-            }
-            addCustomerProducts(customerProductPurchase)
+        customerCart.map(i => {
+            const productId = i.id
+            delete i.id
+            i.purchaseDate = Date.now()
+            addCustomerProducts(i)
+            removeItemFromCart(productId)
         })
         props.history.push("/")
-        sessionStorage.setItem("customer_cart", "")
     }
 
     return (
@@ -35,14 +32,14 @@ export default props => {
             <article className="shoppingCart">
                 <h1> {customerInformation.name}'s Shopping Cart</h1>
                 <div>
-                    <Button onClick={purchaseCart}>Purchase Items</Button>
+                    {customerCart.length ? <Button onClick={purchaseCart}>Purchase Items</Button> : <h4 className="shoppingCart--empty">Your Shopping Cart is Empty!</h4>}
                 </div>
                 <section className="pendingOrder">
                     {
-                        arrayOfCustomersProducts.map(cp => {
-                            let potentialPurchase = products.find(p => p.id === parseInt(cp))
+                        customerCart.map(i => {
+                            let potentialPurchase = products.find(p => p.id === i.productId)
 
-                            return <CartProductPreview key={cp.id}
+                            return <CartItem key={i.id}
                                 product={potentialPurchase}
                                 {...props} />
                         })
