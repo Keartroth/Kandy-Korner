@@ -24,8 +24,8 @@ export default (props) => {
                         <CustomerProductsProvider>
                             <CustomerProvider>
                                 <LocationProductsProvider>
-                                    <LocationProvider>
-                                        <ProductProvider>
+                                    <ProductProvider>
+                                        <LocationProvider>
                                             {/* Render the location list when http://localhost:3000/ */}
                                             <Route exact path="/">
                                                 <LocationList />
@@ -50,8 +50,8 @@ export default (props) => {
                                             <Route exact path="/customers" render={
                                                 props => <CustomerList {...props} />
                                             } />
-                                        </ProductProvider>
-                                    </LocationProvider>
+                                        </LocationProvider>
+                                    </ProductProvider>
                                 </LocationProductsProvider>
                             </CustomerProvider>
                         </CustomerProductsProvider>
