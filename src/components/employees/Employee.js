@@ -17,8 +17,13 @@ export default (props) => {
     const employeeLocation = useRef(0)
     const employeeAddress = useRef("")
     const employeePayRate = useRef("")
+    const employeeEmail = useRef("")
+    const employeePassword = useRef("")
+    const employeePasswordConfirmation = useRef("")
     const employeeFullTime = useRef(0)
     const employeeManagement = useRef(0)
+    const currentEmployee = parseInt(localStorage.getItem("kandy_employee"))
+    const currentManager = parseInt(localStorage.getItem("kandy_manager"))
 
     const employementStatus = (e) => {
         e.preventDefault()
@@ -27,29 +32,35 @@ export default (props) => {
         updateEmployee(subject).then(toggleReHireForm)
     }
     const editEmployee = () => {
-        const isManager = (employeeManagement.current.value === "true" ? true : false)
-        const isFullTime = (employeeFullTime.current.value === "true" ? true : false)
-        const locationId = parseInt(employeeLocation.current.value)
-        const payRateInt = parseInt(employeePayRate.current.value)
+        if (employeePassword !== employeePasswordConfirmation) {
+            window.alert("Passwords do not match.")
+        } else {
+            const isManager = (employeeManagement.current.value === "true" ? true : false)
+            const isFullTime = (employeeFullTime.current.value === "true" ? true : false)
+            const locationId = parseInt(employeeLocation.current.value)
+            const payRateInt = parseInt(employeePayRate.current.value)
 
-        let employeeObect = {
-            id: subject.id,
-            name: employeeName.current.value,
-            management: isManager,
-            fullTime: isFullTime,
-            payRate: payRateInt,
-            locationId: locationId,
-            address: employeeAddress.current.value,
-            employmentStatus: true
+            let employeeObect = {
+                id: subject.id,
+                name: employeeName.current.value,
+                management: isManager,
+                fullTime: isFullTime,
+                payRate: payRateInt,
+                locationId: locationId,
+                address: employeeAddress.current.value,
+                email: employeeEmail.current.value,
+                password: employeePassword.current.value,
+                employmentStatus: true
+            }
+            updateEmployee(employeeObect).then(toggleEditForm)
         }
-        updateEmployee(employeeObect).then(toggleEditForm)
     }
-    
+
     return (
         <>
             <div className="employee">
                 <h3 className="employee__name">{subject.name}</h3>
-                <Button onClick={toggle}>Details</Button>
+                {localStorage.getItem("kandy_manager") || parseInt(localStorage.getItem("kandy_employee")) === subject.id ? <Button onClick={toggle}>Details</Button> : ""}
             </div>
 
             <Modal className="employee__card" isOpen={modal} toggle={toggle}>
@@ -63,9 +74,7 @@ export default (props) => {
                     <div className="employee__type">
                         <label className="label--employee">Full Time:</label> {subject.fullTime ? "✅" : "❌"}
                     </div>
-                    <div className="employee__pay">
-                        <label className="label--employee">Hourly Pay Rate:</label> ${subject.payRate}.00
-                    </div>
+                    {localStorage.getItem("kandy_manager") && subject.management === false || subject.id === currentManager ? <div className="employee__pay"><label className="label--employee">Hourly Pay Rate:</label> ${subject.payRate}.00</div> : ""}
                     <div className="employee__location">
                         <label className="label--employee">Location:</label> {props.workplace.name}
                     </div>
@@ -74,8 +83,10 @@ export default (props) => {
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    {subject.employmentStatus ? <Button color="secondary" onClick={toggleEditForm}>Edit {firstName}'s Info</Button> : ""}
-                    {subject.employmentStatus ? <Button color="secondary" onClick={employementStatus}>Terminate</Button> : <Button color="secondary" onClick={employementStatus}>Re-hire</Button>}
+                    {localStorage.getItem("kandy_manager") && subject.management === false && subject.employmentStatus === true ? <Button color="secondary" onClick={toggleEditForm}>Edit {firstName}'s Info</Button> : ""}
+                    {localStorage.getItem("kandy_manager") && subject.management === false && subject.employmentStatus === true ? <Button color="secondary" onClick={employementStatus}>Terminate</Button> : ""}
+                    {localStorage.getItem("kandy_manager") && subject.employmentStatus === false ? <Button color="secondary" onClick={employementStatus}>Re-hire</Button> : ""}
+                    {subject.id === currentEmployee || subject.id === currentManager && subject.employmentStatus === true ? <Button color="secondary" onClick={employementStatus}>I Quit!</Button> : ""}
                     <Button color="secondary" onClick={toggle}>Close</Button>
                 </ModalFooter>
             </Modal>
@@ -108,6 +119,42 @@ export default (props) => {
                                 autoFocus
                                 className="form-control"
                                 defaultValue={subject.address}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="employeeEmail">Email: </label>
+                            <input
+                                type="text"
+                                id="employeeEmail"
+                                ref={employeeEmail}
+                                required
+                                autoFocus
+                                className="form-control"
+                                defaultValue={subject.email}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="employeePassword">Password: </label>
+                            <input
+                                type="password"
+                                id="employeePassword"
+                                ref={employeePassword}
+                                required
+                                autoFocus
+                                className="form-control"
+                                defaultValue={subject.password}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="employeePasswordConfirmation">PasswordConfirmation: </label>
+                            <input
+                                type="password"
+                                id="employeePasswordConfirmation"
+                                ref={employeePasswordConfirmation}
+                                required
+                                autoFocus
+                                className="form-control"
+                                defaultValue={subject.password}
                             />
                         </div>
                         <div className="form-group">

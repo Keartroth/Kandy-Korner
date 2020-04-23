@@ -18,6 +18,9 @@ export default props => {
     const employeePayRate = useRef("")
     const employeeFullTime = useRef(0)
     const employeeManagement = useRef(0)
+    const employeeEmail = useRef("")
+    const employeePassword = useRef("")
+    const employeePasswordConfirmation = useRef("")
     const currentEmployees = employees.filter(e => e.employmentStatus === true)
     const previousEmployees = employees.filter(e => e.employmentStatus === false)
 
@@ -27,19 +30,24 @@ export default props => {
 
         if (locationId === 0) {
             window.alert("Please select a location")
+        } else if (employeePassword.current.value !== employeePasswordConfirmation.current.value) {
+            window.alert("Passwords do not match.")
         } else {
             const isManager = (employeeManagement.current.value === "true" ? true : false)
             const isFullTime = (employeeFullTime.current.value === "true" ? true : false)
 
-            addEmployee({
+            let employeeObect = {
                 name: employeeName.current.value,
                 management: isManager,
                 fullTime: isFullTime,
                 payRate: payRateInt,
                 locationId: locationId,
                 address: employeeAddress.current.value,
+                email: employeeEmail.current.value,
+                password: employeePassword.current.value,
                 employmentStatus: true
-            })
+            }
+            addEmployee(employeeObect)
                 .then(toggle)
         }
     }
@@ -48,9 +56,8 @@ export default props => {
         <>
             <article className="employees">
                 <h1>Employees</h1>
-                <Button className="employeeList__button" onClick={toggle}>
-                    Add Employee
-                </Button>
+                {localStorage.getItem("kandy_manager") ? <Button className="employeeList__button" onClick={toggle}>Add Employee</Button> : ""}
+                
                 {previousEmployees.length ? <Button className="employeeList__button" onClick={toggleReHireForm}>Show Former Employees</Button> : ""}
                 <section className="employeesList">
                     {
@@ -97,6 +104,42 @@ export default props => {
                             />
                         </div>
                         <div className="form-group">
+                            <label htmlFor="employeeEmail">Email: </label>
+                            <input
+                                type="text"
+                                id="employeeEmail"
+                                ref={employeeEmail}
+                                required
+                                autoFocus
+                                className="form-control"
+                                placeholder="email@email.com"
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="employeePassword">Password: </label>
+                            <input
+                                type="password"
+                                id="employeePassword"
+                                ref={employeePassword}
+                                required
+                                autoFocus
+                                className="form-control"
+                                placeholder="password"
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="employeePasswordConfirmation">Password Confirmation: </label>
+                            <input
+                                type="password"
+                                id="employeePasswordConfirmation"
+                                ref={employeePasswordConfirmation}
+                                required
+                                autoFocus
+                                className="form-control"
+                                placeholder="password"
+                            />
+                        </div>
+                        <div className="form-group">
                             <label htmlFor="employeeLocation">Work location: </label>
                             <select
                                 ref={employeeLocation}
@@ -136,7 +179,7 @@ export default props => {
                             </select>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="employeePayRate">Pay Rate: </label>
+                            <label htmlFor="employeePayRate">Hourly Pay Rate: </label>
                             <input
                                 type="number"
                                 id="employeePayRate"
@@ -144,7 +187,7 @@ export default props => {
                                 required
                                 autoFocus
                                 className="form-control"
-                                placeholder="1500"
+                                placeholder="15 "
                             />
                         </div>
                     </ModalBody>
