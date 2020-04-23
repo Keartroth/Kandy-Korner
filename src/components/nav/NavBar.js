@@ -14,6 +14,20 @@ export default (props) => {
             <li className="navbar__item active">
                 <Link className="navbar__link" to="/employees">Employees</Link>
             </li>
+            {
+                localStorage.getItem("kandy_customer")
+                    ? <li className="navbar__item">
+                        <Link className="navbar__link"
+                            to=""
+                            onClick={e => {
+                                e.preventDefault()
+                                localStorage.removeItem("kandy_customer")
+                                props.history.push("/")
+                            }}
+                        >Logout</Link>
+                    </li>
+                    : ""
+            }
         </ul>
     )
 }
