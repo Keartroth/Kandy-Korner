@@ -15,10 +15,13 @@ export default (props) => {
                 <Link className="navbar__link" to="/cart">Cart</Link>
             </li>
             <li className="navbar__item active">
-                <Link className="navbar__link" to="/customer">Users's Account</Link>
+                <Link className="navbar__link" to="/user">Users's Account</Link>
             </li>
             <li className="navbar__item active">
                 <Link className="navbar__link" to="/employees">Employees</Link>
+            </li>
+            <li className="navbar__item active">
+                <Link className="navbar__link" to="/customers">Customers</Link>
             </li>
             {
                 localStorage.getItem("kandy_customer")

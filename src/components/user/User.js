@@ -1,17 +1,20 @@
 import React, { useState, useContext } from "react"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
-import "./Customer.css"
-import { CustomerProductsContext } from "./CustomerProductsProvider"
+import { CustomerContext } from "../customers/CustomerProvider"
+import "./User.css"
+import { CustomerProductsContext } from "../customers/CustomerProductsProvider"
 import { ProductContext } from "../products/ProductsProvider"
-import CustomerOrderHistory from "./CustomerOrderHistory"
+import UserOrderHistory from "./UserOrderHistory"
 
 export default (props) => {
     const [modal, setModal] = useState(false)
     const toggle = () => setModal(!modal)
+    const { customers } = useContext(CustomerContext)
     const { products } = useContext(ProductContext)
     const { customerProducts } = useContext(CustomerProductsContext)
-    const customerInformation = props.customer
-    const purchaseHistory = customerProducts.filter(cp => cp.customerId === customerInformation.id)
+    const customerId = parseInt(localStorage.getItem("kandy_customer"))
+    const customerInformation = customers.find(c => c.id === customerId)
+    const purchaseHistory = customerProducts.filter(cp => cp.customerId === customerId)
 
     return (
         <>
@@ -35,7 +38,7 @@ export default (props) => {
                         {
                             purchaseHistory.map(ph => {
                                 let purchasedProduct = products.find(p => p.id === ph.productId)
-                                return <CustomerOrderHistory
+                                return <UserOrderHistory
                                 key={purchaseHistory.indexOf(ph)}
                                 product={purchasedProduct}
                                 {...props} />
