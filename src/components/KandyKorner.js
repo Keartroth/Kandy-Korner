@@ -12,6 +12,7 @@ export default () => (
             if (localStorage.getItem("kandy_customer")) {
                 return (
                     <>
+                        
                         <Route render={props => <NavBar {...props} />} />
                         <Route render={props => <ApplicationViews {...props} />} />
                     </>
