@@ -27,15 +27,15 @@ export default (props) => {
 
         const uniqueProductIds = [...new Set(purchaseHistory.map(ph => ph.productId))]
 
-        const uniqueProductPurchases = uniqueProductIds.map(up => {
+        const uniqueProductPurchased = uniqueProductIds.map(up => {
             return products.find(p => p.id === up)
         })
 
-        uniqueProductPurchases.map(u => {
+        uniqueProductPurchased.map(u => {
             u.quanitiy = frequency[u.id]
         })
 
-        const sortedUniqueProductPurchases = uniqueProductPurchases.sort((a, b) => {
+        const sortedUniqueProductPurchases = uniqueProductPurchased.sort((a, b) => {
             return b.quanitiy - a.quanitiy
         })
         return sortedUniqueProductPurchases

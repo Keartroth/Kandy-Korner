@@ -4,25 +4,27 @@ import { Button } from "reactstrap"
 import { CartContext } from "./CartProductProvider"
 
 export default (props) => {
-   const { shoppingCart, removeItemFromCart } = useContext(CartContext)
-   const customerId = parseInt(localStorage.getItem("kandy_customer"))
+    const { shoppingCart, removeItemFromCart } = useContext(CartContext)
+    const customerId = parseInt(localStorage.getItem("kandy_customer"))
+    const product = props.product
+    const totalPrice = product.quanitiy * product.price
 
     const removeItem = () => {
-        const customerCart = shoppingCart.filter(sc => sc.customerId === customerId)
-        const currentId = props.product.id
-        const foundPotentialPurchase = customerCart.find(sc => sc.productId === currentId)
-        removeItemFromCart(foundPotentialPurchase.id)
+        const currentCustomersCart = shoppingCart.filter(sc => sc.customerId === customerId)
+        const foundProducts = currentCustomersCart.filter(cc => cc.productId === product.id)
+        debugger
+        foundProducts.forEach(fp => removeItemFromCart(fp.id))
     }
 
     return (
         <>
-            <div className="cart__preview">
-                <div>
-                    <div className="cart__productName">{props.product.name}</div>
-                    <label className="cart__productPrice">Price:</label> {props.product.price}
-                </div>
-                <Button onClick={removeItem}>Remove Item From Cart</Button>
-            </div>
+            <tr>
+                <td>{product.name}</td>
+                <td>{product.quanitiy}</td>
+                <td>{product.price}</td>
+                <td>{totalPrice.toFixed(2)}</td>
+                <td><Button onClick={removeItem}>Remove Items From Cart</Button></td>
+            </tr>
         </>
     )
 }
