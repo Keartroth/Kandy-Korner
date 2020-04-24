@@ -2,12 +2,18 @@ import React from "react"
 import "./User.css"
 
 export default (props) => {
+    const quantity = props.purchase.quanitiy
+    const product = props.product
+    const totalSpent = quantity * product.price
+
     return (
         <>
-            <div className="product">
-                <div className="product__name">{props.product.name}</div>
-                <div className="product__price">{props.product.price}</div>
-            </div>
+            <tr>
+                <td>{product.name}</td>
+                <td>{quantity}</td>
+                <td>${product.price}</td>
+                <td>${totalSpent.toFixed(2)}</td>
+            </tr>
         </>
     )
 }

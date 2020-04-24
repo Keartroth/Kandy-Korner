@@ -32,7 +32,7 @@ export default (props) => {
         updateEmployee(subject).then(toggleReHireForm)
     }
     const editEmployee = () => {
-        if (employeePassword !== employeePasswordConfirmation) {
+        if (employeePassword.current.value !== employeePasswordConfirmation.current.value) {
             window.alert("Passwords do not match.")
         } else {
             const isManager = (employeeManagement.current.value === "true" ? true : false)
