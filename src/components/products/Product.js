@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useRef } from "react"
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import "./Product.css"
 import { CartContext } from "../cart/CartProductProvider"
@@ -7,17 +7,22 @@ export default (props) => {
     const [modal, setModal] = useState(false)
     const toggle = () => setModal(!modal)
     const { addItemToCart } = useContext(CartContext)
+    const productQuantity = useRef(0)
 
     const addToCart = (e) => {
         e.preventDefault()
         const productId = props.product.id
         const customerId = parseInt(localStorage.getItem("kandy_customer"))
-        let productObject = {
-            productId: productId,
-            customerId: customerId
+        const purchaseQuantity = parseInt(productQuantity.current.value)
+
+        for (var i = 1; i <= purchaseQuantity; i++) {
+            let productObject = {
+                productId: productId,
+                customerId: customerId
+            }
+            addItemToCart(productObject)
         }
-        addItemToCart(productObject)
-        toggle()
+            toggle()
     }
 
     return (
@@ -40,6 +45,17 @@ export default (props) => {
                     </div>
                 </ModalBody>
                 <ModalFooter>
+                    <div className="product__quantity">
+                        <label htmlFor="productQuantity">Purchase Quantity: </label>
+                        <input
+                            type="number"
+                            id="productQuantity"
+                            ref={productQuantity}
+                            autoFocus
+                            className="product__quantity"
+                            defaultValue={1}
+                        />
+                    </div>
                     <Button color="secondary" onClick={addToCart}>Add to Cart</Button>
                     <Button color="secondary" onClick={toggle}>Close</Button>
                 </ModalFooter>
