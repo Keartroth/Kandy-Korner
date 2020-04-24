@@ -74,7 +74,9 @@ export default (props) => {
                     <div className="employee__type">
                         <label className="label--employee">Full Time:</label> {subject.fullTime ? "✅" : "❌"}
                     </div>
-                    {localStorage.getItem("kandy_manager") && subject.management === false || subject.id === currentManager ? <div className="employee__pay"><label className="label--employee">Hourly Pay Rate:</label> ${subject.payRate}.00</div> : ""}
+                    {localStorage.getItem("kandy_manager") && subject.management === false ? <div className="employee__pay"><label className="label--employee">Hourly Pay Rate:</label> ${subject.payRate}.00</div> : ""}
+                    {subject.id === currentManager ? <div className="employee__pay"><label className="label--employee">Hourly Pay Rate:</label> ${subject.payRate}.00</div> : ""}
+                    {subject.id === currentEmployee ? <div className="employee__pay"><label className="label--employee">Hourly Pay Rate:</label> ${subject.payRate}.00</div> : ""}
                     <div className="employee__location">
                         <label className="label--employee">Location:</label> {props.workplace.name}
                     </div>
@@ -85,8 +87,9 @@ export default (props) => {
                 <ModalFooter>
                     {localStorage.getItem("kandy_manager") && subject.management === false && subject.employmentStatus === true ? <Button color="secondary" onClick={toggleEditForm}>Edit {firstName}'s Info</Button> : ""}
                     {localStorage.getItem("kandy_manager") && subject.management === false && subject.employmentStatus === true ? <Button color="secondary" onClick={employementStatus}>Terminate</Button> : ""}
-                    {localStorage.getItem("kandy_manager") && subject.employmentStatus === false ? <Button color="secondary" onClick={employementStatus}>Re-hire</Button> : ""}
-                    {subject.id === currentEmployee || subject.id === currentManager && subject.employmentStatus === true ? <Button color="secondary" onClick={employementStatus}>I Quit!</Button> : ""}
+                    {localStorage.getItem("kandy_manager") && subject.employmentStatus === false  && parseInt(localStorage.getItem("kandy_manager")) !== subject.id ? <Button color="secondary" onClick={employementStatus}>Re-hire</Button> : ""}
+                    {subject.id === currentEmployee && subject.employmentStatus === true ? <Button color="secondary" onClick={employementStatus}>I Quit!</Button> : ""}
+                    {subject.id === currentManager && subject.employmentStatus === true ? <Button color="secondary" onClick={employementStatus}>I Quit!</Button> : ""}
                     <Button color="secondary" onClick={toggle}>Close</Button>
                 </ModalFooter>
             </Modal>
