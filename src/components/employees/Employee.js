@@ -119,7 +119,6 @@ export default (props) => {
                                 id="employeeAddress"
                                 ref={employeeAddress}
                                 required
-                                autoFocus
                                 className="form-control"
                                 defaultValue={subject.address}
                             />
@@ -131,7 +130,6 @@ export default (props) => {
                                 id="employeeEmail"
                                 ref={employeeEmail}
                                 required
-                                autoFocus
                                 className="form-control"
                                 defaultValue={subject.email}
                             />
@@ -143,7 +141,6 @@ export default (props) => {
                                 id="employeePassword"
                                 ref={employeePassword}
                                 required
-                                autoFocus
                                 className="form-control"
                                 defaultValue={subject.password}
                             />
@@ -155,7 +152,6 @@ export default (props) => {
                                 id="employeePasswordConfirmation"
                                 ref={employeePasswordConfirmation}
                                 required
-                                autoFocus
                                 className="form-control"
                                 defaultValue={subject.password}
                             />
@@ -209,7 +205,6 @@ export default (props) => {
                                 id="employeePayRate"
                                 ref={employeePayRate}
                                 required
-                                autoFocus
                                 className="form-control"
                                 defaultValue={subject.payRate}
                             />
