@@ -15,7 +15,7 @@ export default () => {
         <article className="customers">
             <h1>Customer Order History</h1>
             <section className="customerList">
-                <Table id="customerPurchaseTable">
+                <Table id="customer__PurchaseTable">
                     <thead>
                         <tr>
                             <th>ID</th>

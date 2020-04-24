@@ -1,4 +1,7 @@
- 
+ .user__name {
+     text-align: center;
+ }
+
 .customer {
     border: 1px solid goldenrod;
     flex-basis: 28%;
@@ -29,4 +32,10 @@
 
 #orderHistory__header {
     margin: auto;
+}
+
+#user__PurchaseTable {
+    border: 1px goldenrod solid;
+    margin: 50px auto;
+    width: 75%;
 }
