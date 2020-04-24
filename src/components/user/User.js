@@ -14,23 +14,31 @@ export default (props) => {
     const customerInformation = customers.find(c => c.id === customerId)
     const purchaseHistory = customerProducts.filter(cp => cp.customerId === customerId)
 
-    const sortByFrequency = (array) => {
+    const sortByFrequency = (purchaseHistory) => {
         let frequency = {};
 
-        array.forEach((value) => frequency[value.productId] = 0);
+        purchaseHistory.forEach((value) => {
+            if (!frequency[value.productId]) {
+                frequency[value.productId] = 1
+            } else {
+                frequency[value.productId] = frequency[value.productId] + 1
+            }
+        });
 
-        const uniques = array.filter((value) => {
-            return ++frequency[value.productId] == 1
+        const uniqueProductIds = [...new Set(purchaseHistory.map(ph => ph.productId))]
+
+        const uniqueProductPurchases = uniqueProductIds.map(up => {
+            return products.find(p => p.id === up)
         })
 
-        uniques.map(u => {
-            u.quanitiy = frequency[u.productId]
+        uniqueProductPurchases.map(u => {
+            u.quanitiy = frequency[u.id]
         })
 
-        const sortedUniques = uniques.sort((a, b) => {
+        const sortedUniqueProductPurchases = uniqueProductPurchases.sort((a, b) => {
             return b.quanitiy - a.quanitiy
         })
-        return sortedUniques
+        return sortedUniqueProductPurchases
     }
 
     const customerPurchases = sortByFrequency(purchaseHistory)
@@ -51,11 +59,9 @@ export default (props) => {
                     <tbody>
                         {
                             customerPurchases.map(cps => {
-                                let purchasedProduct = products.find(p => p.id === cps.productId)
                                 return <UserOrderHistory
                                     key={cps.id}
                                     purchase={cps}
-                                    product={purchasedProduct}
                                     {...props} />
                             })
                         }

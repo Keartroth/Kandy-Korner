@@ -3,7 +3,7 @@ import "./User.css"
 
 export default (props) => {
     const quantity = props.purchase.quanitiy
-    const product = props.product
+    const product = props.purchase
     const totalSpent = quantity * product.price
 
     return (
