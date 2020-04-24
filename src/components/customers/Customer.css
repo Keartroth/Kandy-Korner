@@ -34,3 +34,9 @@
 #orderHistory__header {
     margin: auto;
 }
+
+#customerPurchaseTable {
+    border: 1px goldenrod solid;
+    margin: 50px auto;
+    width: 50%;
+}

@@ -1,52 +1,25 @@
-import React, { useState, useContext } from "react"
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import React from "react"
 import "./Customer.css"
-import { CustomerProductsContext } from "./CustomerProductsProvider"
-import { ProductContext } from "../products/ProductsProvider"
-import CustomerOrderHistory from "./CustomerOrderHistory"
 
 export default (props) => {
-    const [modal, setModal] = useState(false)
-    const toggle = () => setModal(!modal)
-    const { products } = useContext(ProductContext)
-    const { customerProducts } = useContext(CustomerProductsContext)
     const customerInformation = props.customer
-    const purchaseHistory = customerProducts.filter(cp => cp.customerId === customerInformation.id)
+    const purchaseHistory = props.purchases
+    const products = props.productList
+
+    let totalSpent = 0
+    purchaseHistory.map(ph => {
+        let pro = products.find(p => p.id === ph.productId)
+        totalSpent = totalSpent + pro.price
+    })
 
     return (
         <>
-            <section className="customer">
-                <h3 className="customer__name">{customerInformation.name}</h3>
-                <div className="customer__contact">
-                    <label className="label--customer">Customer Contact:</label> {customerInformation.email}
-                </div>
-                <div className="customer__shippingAddress">
-                    <label className="label--customer">Shipping Address:</label> {customerInformation.address}
-                </div>
-                <Button onClick={toggle}>Order History</Button>
-            </section>
-
-            <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader id="orderHistory__header">
-                    {customerInformation.name}'s Order History
-                </ModalHeader>
-                <ModalBody>
-                    <ul>
-                        {
-                            purchaseHistory.map(ph => {
-                                let purchasedProduct = products.find(p => p.id === ph.productId)
-                                return <CustomerOrderHistory
-                                key={purchaseHistory.indexOf(ph)}
-                                product={purchasedProduct}
-                                {...props} />
-                            })
-                        }
-                    </ul>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="secondary" onClick={toggle}>Close</Button>
-                </ModalFooter>
-            </Modal>
+            <tr>
+                <td>{customerInformation.id}</td>
+                <td>{customerInformation.name}</td>
+                <td>{purchaseHistory.length}</td>
+                <td>${totalSpent.toFixed(2)}</td>
+            </tr>
         </>
     )
 }
