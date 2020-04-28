@@ -14,8 +14,8 @@ export default props => {
     const { products } = useContext(ProductContext)
     const { shoppingCart, removeItemFromCart } = useContext(CartContext)
     const customerId = parseInt(localStorage.getItem("kandy_customer"))
-    const customerInformation = customers.find(c => c.id === customerId)
-    const customerCart = shoppingCart.filter(sc => sc.customerId === customerId)
+    const customerInformation = customers.find(c => c.id === customerId) || {}
+    const customerCart = shoppingCart.filter(sc => sc.customerId === customerId) || []
 
     const sortByFrequency = () => {
         let frequency = {};
@@ -75,37 +75,38 @@ export default props => {
                     {filteredCustomerCart.length ? "" : <h4 className="shoppingCart--empty">Your Shopping Cart is Empty!</h4>}
                 </div>
                 <section className="pendingOrder">
-                {filteredCustomerCart.length ? 
-                <Table id="user__CartTable">
-                        <thead>
-                            <tr>
-                                <th>Candy</th>
-                                <th>Quantity</th>
-                                <th>Price/unit</th>
-                                <th>Total</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                filteredCustomerCart.map(i => {
-                                    return <CartItem key={i.id}
-                                        product={i}
-                                        {...props} />
-                                })
-                            }
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>${total.toFixed(2)}</td>
-                                <td><Button onClick={purchaseCart}>Purchase Items</Button></td>
-                            </tr>
-                        </tfoot>
-                    </Table> 
-                    : ""}
+                    {filteredCustomerCart.length ?
+                        <Table id="user__CartTable">
+                            <thead>
+                                <tr>
+                                    <th>Candy</th>
+                                    <th>Quantity</th>
+                                    <th>Price/unit</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    filteredCustomerCart.map(i => {
+                                        return <CartItem key={i.id}
+                                            product={i}
+                                            shoppingCart={shoppingCart}
+                                            {...props} />
+                                    })
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>${total.toFixed(2)}</td>
+                                    <td><Button onClick={purchaseCart}>Purchase Items</Button></td>
+                                </tr>
+                            </tfoot>
+                        </Table>
+                        : ""}
                 </section>
             </article>
         </>

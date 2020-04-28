@@ -57,16 +57,17 @@ export default props => {
             <article className="employees">
                 <h1>Employees</h1>
                 {localStorage.getItem("kandy_manager") ? <Button className="employeeList__button" onClick={toggle}>Add Employee</Button> : ""}
-                
+
                 {previousEmployees.length ? <Button className="employeeList__button" onClick={toggleReHireForm}>Show Former Employees</Button> : ""}
                 <section className="employeesList">
                     {
                         currentEmployees.map(emp => {
                             let foundLocation = locations.find(l => l.id === emp.locationId)
-
+                            debugger
                             return <Employee key={emp.id}
                                 employee={emp}
                                 workplace={foundLocation}
+                                locations={locations}
                                 {...props} />
                         })
                     }

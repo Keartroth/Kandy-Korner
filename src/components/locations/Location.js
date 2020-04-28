@@ -5,7 +5,7 @@ import "./Location.css"
 export default (props) => {
     const [modal, setModal] = useState(false)
     const toggle = () => setModal(!modal)
-    const inventoryList = props.productList
+    const inventoryList = props.productList  || []
     
     return (
         <>

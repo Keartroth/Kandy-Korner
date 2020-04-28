@@ -6,9 +6,10 @@ import { CartContext } from "./CartProductProvider"
 export default (props) => {
     const [modal, setModal] = useState(false)
     const toggle = () => setModal(!modal)
-    const { shoppingCart, removeItemFromCart, addItemToCart } = useContext(CartContext)
+    const { removeItemFromCart, addItemToCart } = useContext(CartContext)
     const productQuantityNode = useRef(0)
     const customerId = parseInt(localStorage.getItem("kandy_customer"))
+    const shoppingCart = props.shoppingCart
     const product = props.product
     const totalPrice = product.quanitiy * product.price
 

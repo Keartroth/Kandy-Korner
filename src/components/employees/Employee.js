@@ -10,7 +10,7 @@ export default (props) => {
     const [modalEditForm, setEditFormModal] = useState(false)
     const toggleEditForm = () => setEditFormModal(!modalEditForm)
     const { updateEmployee } = useContext(EmployeeContext)
-    const { locations } = useContext(LocationContext)
+    const locations = props.locations
     const subject = props.employee
     const firstName = subject.name.split(" ")[0]
     const employeeName = useRef("")

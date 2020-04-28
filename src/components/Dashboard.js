@@ -30,23 +30,25 @@ export default ({ toggle }) => {
     )
 
     const showProducts = () => (
-        <ProductTypesProvider>
-            <ProductProvider>
-                <ProductsList />
-            </ProductProvider>
-        </ProductTypesProvider>
+        <CartProvider>
+            <ProductTypesProvider>
+                <ProductProvider>
+                    <ProductsList />
+                </ProductProvider>
+            </ProductTypesProvider>
+        </CartProvider>
     )
 
     const showCart = () => (
-        <CustomerProvider>
-            <ProductProvider>
-                <CustomerProductsProvider>
-                    <CartProvider>
+        <ProductProvider>
+            <CustomerProductsProvider>
+                <CartProvider>
+                    <CustomerProvider>
                         <Cart />
-                    </CartProvider>
-                </CustomerProductsProvider>
-            </ProductProvider>
-        </CustomerProvider>
+                    </CustomerProvider>
+                </CartProvider>
+            </CustomerProductsProvider>
+        </ProductProvider>
     )
 
     const showUser = () => (

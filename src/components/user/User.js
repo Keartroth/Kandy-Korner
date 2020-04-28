@@ -11,7 +11,7 @@ export default (props) => {
     const { products } = useContext(ProductContext)
     const { customerProducts } = useContext(CustomerProductsContext)
     const customerId = parseInt(localStorage.getItem("kandy_customer"))
-    const customerInformation = customers.find(c => c.id === customerId)
+    const customerInformation = customers.find(c => c.id === customerId)   || {}
     const purchaseHistory = customerProducts.filter(cp => cp.customerId === customerId)
 
     const sortByFrequency = (purchaseHistory) => {
