@@ -1,10 +1,8 @@
 import React, { useRef } from "react"
 import { Button } from 'reactstrap'
-import { Link } from "react-router-dom";
 import "./Login.css"
 
-
-const EmployeeLogin = props => {
+export const EmployeeLogin = ({ toggle }) => {
     const email = useRef()
     const password = useRef()
 
@@ -26,10 +24,10 @@ const EmployeeLogin = props => {
                 if (exists && exists.password === password.current.value) {
                     if (exists.management === true) {
                         localStorage.setItem("kandy_manager", exists.id)
-                        props.history.push("/")
+                        toggle()
                     } else {
                         localStorage.setItem("kandy_employee", exists.id)
-                        props.history.push("/")
+                        toggle()
                     }
                 } else if (exists && exists.password !== password.current.value) {
                     window.alert("Password does not match.")
@@ -65,13 +63,9 @@ const EmployeeLogin = props => {
                         <Button type="submit">
                             Sign in
                         </Button>
-                        <br/>
-                        <br/>
-                        <Link to="/login">User Login</Link>
                     </fieldset>
                 </form>
             </section>
         </main>
     )
 }
-export default EmployeeLogin

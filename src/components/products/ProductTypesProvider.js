@@ -10,7 +10,7 @@ export const ProductTypesContext = React.createContext()
 /*
  This component establishes what data can be used.
  */
-export const ProductTypesTypesProvider = (props) => {
+export const ProductTypesProvider = (props) => {
     const [productTypes, setProductTypes] = useState([])
     const [searchTerm, setSearchTerm] = useState("")
 

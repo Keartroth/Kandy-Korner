@@ -1,9 +1,12 @@
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import { Button } from 'reactstrap'
-import { Link } from "react-router-dom";
+import Register from "./Register"
 import "./Login.css"
 
-const Login = props => {
+export const Login = ({ toggle }) => {
+    const [registerCheck, registerUpdate] = useState(false)
+    const toggleRegister = () => registerUpdate(!registerCheck)
+
     const email = useRef()
     const password = useRef()
 
@@ -25,7 +28,7 @@ const Login = props => {
             .then(exists => {
                 if (exists && exists.password === password.current.value) {
                     localStorage.setItem("kandy_customer", exists.id)
-                    props.history.push("/")
+                    toggle()
                 } else if (exists && exists.password !== password.current.value) {
                     window.alert("Password does not match.")
                 } else if (!exists) {
@@ -38,7 +41,7 @@ const Login = props => {
         <main className="container--login">
             <section>
                 <form className="form--login" onSubmit={handleLogin}>
-                    <h1>Kandy Korner</h1>
+                    <h1>Kandy Korner Customer Login</h1>
                     <h2>Please sign in</h2>
                     <fieldset>
                         <label htmlFor="inputEmail"> Email address </label>
@@ -60,16 +63,15 @@ const Login = props => {
                         <Button type="submit">
                             Sign in
                         </Button>
-                        <br/>
-                        <br/>
-                        <Link to="/employeelogin">Employee Login</Link>
                     </fieldset>
                 </form>
             </section>
             <section className="link--register">
-                <Link to="/register">Not a member yet?</Link>
+                <div className="fakeLink href" onClick={toggleRegister}>Not a member yet?</div>
+                <div>
+                    <Register toggleRegister={toggleRegister} toggle={toggle} registerCheck={registerCheck} />
+                </div>
             </section>
         </main>
     )
 }
-export default Login

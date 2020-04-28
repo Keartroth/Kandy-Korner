@@ -1,30 +1,15 @@
-import React from "react"
-import { Route, Redirect } from "react-router-dom"
-import ApplicationViews from "./ApplicationViews"
-import NavBar from "./nav/NavBar"
-import Login from "./auth/Login"
-import Register from "./auth/Register"
-import EmployeeLogin from "./auth/EmployeeLogin"
+import React, { useState } from "react"
+import Dashboard from "./Dashboard"
 import "./KandyKorner.css"
+import { Auth } from "./auth/Auth"
 
-export default () => (
-    <>
-        <Route render={() => {
-            if (localStorage.getItem("kandy_customer") || localStorage.getItem("kandy_manager") || localStorage.getItem("kandy_employee")) {
-                return (
-                    <>
-                        
-                        <Route render={props => <NavBar {...props} />} />
-                        <Route render={props => <ApplicationViews {...props} />} />
-                    </>
-                )
-            } else {
-                return <Redirect to="/login" />
-            }
-        }} />
 
-        <Route path="/login" render={props => <Login {...props} />} />
-        <Route path="/register" render={props => <Register {...props} />} />
-        <Route path="/employeelogin" render={props => <EmployeeLogin {...props} />} />
-    </>
-)
+export default () => {
+    const [check, update] = useState(false)
+    const toggle = () => update(!check)
+
+    return (
+        localStorage.getItem("kandy_customer") || 
+        localStorage.getItem("kandy_manager") || 
+        localStorage.getItem("kandy_employee") ? <Dashboard toggle={toggle} /> : <Auth toggle={toggle} />
+)}
